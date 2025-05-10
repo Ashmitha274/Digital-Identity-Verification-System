@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RunSure Bank</title>
+  <style>
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #f5fff6;
+}
+
+header {
+  background-color: #0d2d52;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  color: white;
+  z-index: 10;
+  position: relative;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  width: 60px;
+  height: 60px;
+}
+
+.bank-name {
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+nav {
+  display: flex;
+  gap: 40px;
+}
+
+nav a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s;
+}
+
+nav a:hover {
+  transform: scale(1.1);
+}
+
+.nav-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  margin-bottom: 5px;
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hero video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.498);
+}
+
+.hero-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  color: white;
+  text-align: center;
+  animation: fadeIn 2s ease-in-out;
+}
+
+.hero-text h2 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+.hero-text button {
+  padding: 12px 25px;
+  background-color: #064f77;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.hero-text button:hover {
+  transform: scale(1.1);
+  background-color: #043c5c;
+}
+
+.spacer {
+  background-color: #ffffff;
+  padding: 60px 20px;
+  text-align: center;
+  animation: fadeIn 2s ease-in-out;
+}
+
+.spacer h2 {
+  font-size: 2.2em;
+  color: #0d2d52;
+  margin-bottom: 30px;
+}
+
+.flowchart,
+#contact {
+  padding: 60px 20px;
+  text-align: center;
+  animation: fadeIn 2s ease-in-out;
+}
+
+.flowchart {
+  background-color: #eaf3f7;
+}
+
+.flowchart h3,
+#contact h3 {
+  font-size: 2em;
+  color: #064f77;
+  margin-bottom: 30px;
+}
+
+.flow-items {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.flow-item {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  width: 220px;
+  transition: transform 0.3s;
+}
+
+.flow-item:hover {
+  transform: translateY(-5px);
+}
+
+.flow-item img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 15px;
+}
+
+.flow-item h4 {
+  font-size: 1.2em;
+  color: #0d2d52;
+  margin-bottom: 10px;
+}
+
+.flow-item p {
+  font-size: 0.95em;
+  color: #444;
+}
+
+#contact .flow-items {
+  flex-direction: column;
+  align-items: center;
+}
+
+#contact .flow-item {
+  width: 90%;
+  max-width: 400px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .hero-text h2 {
+    font-size: 1.8em;
+  }
+
+  .flow-items {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+
+
+    </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <img src="{{ url_for('static', filename='assets/logo.png') }}" class="nav-icon" alt="Logo" />
+      <div class="bank-name">
+        <span>RunSure</span>
+        <span>Bank</span>
+      </div>
+    </div>
+    <nav>
+      <a href="#">
+            <img src="{{ url_for('static', filename='assets/house.png') }}" class="nav-icon" alt="Logo" />
+            <span>Home</span>
+        </a>
+      <a href="#flowchart">
+<img src="{{ url_for('static', filename='assets/services.png') }}" class="nav-icon" alt="Logo" />
+        <span>Services</span>
+      </a>
+      <a href="#contact">
+
+        <img src="{{ url_for('static', filename='assets/contact-us.png') }}" class="nav-icon" alt="Logo" />
+        <span>Contact Us</span>
+      </a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <video width="640" height="360" autoplay muted loop>
+  <source src="{{ url_for('static', filename='assets/video.mp4') }}" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+    <div class="video-overlay"></div>
+    <div class="hero-text">
+      <h2>Start Banking With Us!</h2>
+      <button onclick="window.location.href='/language'">Open Now</button>
+    </div>
+  </section>
+
+  <!-- Tagline -->
+  <section class="spacer">
+    <h2>Identity Secured. Banking Assured.</h2>
+  </section>
+
+  <!-- Services -->
+  <section class="flowchart" id="flowchart">
+    <h3>Our Identity Verification Flow</h3>
+    <div class="flow-items">
+      <div class="flow-item">
+        <img src="{{ url_for('static', filename='assets/file.png') }}" class="nav-icon" alt="Logo" />
+        <h4>Aadhaar Upload</h4>
+        <p>Start by uploading your Aadhaar card for OCR extraction.</p>
+      </div>
+      <div class="flow-item">
+        <img src="{{ url_for('static', filename='assets/phone.png') }}" class="nav-icon" alt="Logo" />
+        <h4>Phone Verification</h4>
+        <p>We send a secure OTP to your registered phone number.</p>
+      </div>
+      <div class="flow-item">
+        <img src="{{ url_for('static', filename='assets/face.png') }}" class="nav-icon" alt="Logo" />
+        <h4>Face Match</h4>
+        <p>We compare your face with Aadhaar photo using AI.</p>
+      </div>
+      <div class="flow-item">
+        <img src="{{ url_for('static', filename='assets/liveliness.png') }}" class="nav-icon" alt="Logo" />
+        <h4>Liveliness Check</h4>
+        <p>Real-time camera check to ensure it's really you.</p>
+      </div>
+      <div class="flow-item">
+        <img src="{{ url_for('static', filename='assets/voice.png') }}" class="nav-icon" alt="Logo" />
+        <h4>Voice Authentication</h4>
+        <p>Speak a line to validate your identity further.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Us -->
+  <section id="contact">
+    <h3>Meet Our Team - <strong>runtime_terrors</strong></h3>
+    <div class="flow-items">
+      <div class="flow-item">
+        <h4>BHARGAVI SRINIVAS</h4>
+      </div>
+      <div class="flow-item">
+        <h4>ASHMITHA M. A.</h4>
+      </div>
+      <div class="flow-item">
+        <h4>AFREEN</h4>
+      </div>
+      <div class="flow-item">
+        <h4>ARYA G. SUNDARESH</h4>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

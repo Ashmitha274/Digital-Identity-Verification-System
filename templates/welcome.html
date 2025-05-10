@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome - Digital Identity Verification</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Logo"/>
+
+      <div class="bank-name">
+        <span>RunSure</span>
+        <span>Bank</span>
+      </div>
+    </div>
+    <nav>
+      <a href="#">
+        <img src="{{ url_for('static', filename='assets/house.png') }}" class="nav-icon" />
+        <span>Home</span>
+      </a>
+      <a href="#flowchart">
+        <img src="{{ url_for('static', filename='assets/customer-service.png') }}" class="nav-icon" />
+        <span>Services</span>
+      </a>
+      <a href="#contact">
+        <img src="{{ url_for('static', filename='assets/contact-us.png') }}" class="nav-icon" />
+        <span>Contact Us</span>
+      </a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <video autoplay muted loop playsinline>
+      <source src="{{ url_for('static', filename='assets/video.mp4') }}" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+    <div class="video-overlay"></div>
+    <div class="hero-text">
+      <h2>Start Banking With Us!</h2>
+      <button onclick="window.location.href='/welcome'">Open Now</button>
+    </div>
+  </section>
+
+  <!-- Tagline -->
+  <section class="spacer">
+    <h2>Identity Secured. Banking Assured.</h2>
+  </section>
+
+  <!-- Services -->
+  <section class="flowchart" id="flowchart">
+    <h3>Our Identity Verification Flow</h3>
+    <div class="flow-items">
+      <div class="flow-item">
+        <img src="{{ url_for('static', filename='assets/file.png') }}" alt="Upload" />
+        <h4>Aadhaar Upload</h4>
+        <p>Start by uploading your Aadhaar card for OCR extraction.</p>
+      </div>
+      <div class="flow-item">
+        <img src="{{ url_for('static', filename='assets/security.png') }}" alt="OTP" />
+        <h4>Phone Verification</h4>
+        <p>We send a secure OTP to your registered phone number.</p>
+      </div>
+      <div class="flow-item">
+        <img src="{{ url_for('static', filename='assets/link.png') }}" alt="Face Scan" />
+        <h4>Face Match</h4>
+        <p>We compare your face with Aadhaar photo using AI.</p>
+      </div>
+      <div class="flow-item">
+        <img src="{{ url_for('static', filename='assets/test.png') }}" alt="Liveliness" />
+        <h4>Liveliness Check</h4>
+        <p>Real-time camera check to ensure it's really you.</p>
+      </div>
+      <div class="flow-item">
+        <img src="{{ url_for('static', filename='assets/voice-message.png') }}" alt="Voice" />
+        <h4>Voice Authentication</h4>
+        <p>Speak a line to validate your identity further.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Us -->
+  <section id="contact">
+    <h3>Meet Our Team - <strong>runtime_terrors</strong></h3>
+    <div class="flow-items">
+      <div class="flow-item">
+        <h4>BHARGAVI SRINIVAS</h4>
+      </div>
+      <div class="flow-item">
+        <h4>ASHMITHA M. A.</h4>
+      </div>
+      <div class="flow-item">
+        <h4>AFREEN</h4>
+      </div>
+      <div class="flow-item">
+        <h4>ARYA G. SUNDARESH</h4>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

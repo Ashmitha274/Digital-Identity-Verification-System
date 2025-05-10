@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Select Language</title>
+  <style>
+    body {
+      background-color: #f0f8ff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    h1 {
+      color: #064f77;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #333333;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    select {
+      padding: 10px;
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      outline: none;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 12px 20px;
+      background-color: #064f77;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #043c5c;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Select Your Language</h1>
+    <p>Please choose the language you prefer for verification:</p>
+
+    <select id="language" onchange="speakLanguageSelection()">
+      <option value="">-- Select Language --</option>
+      <option value="en">English</option>
+      <option value="kn">Kannada</option>
+    </select>
+
+    <br/><br/>
+    <button onclick="goToNextPage()">Continue</button>
+  </div>
+
+  <script>
+    // Speak selected language message
+    function speakLanguageSelection() {
+      const selectedLanguage = document.getElementById('language').value;
+      let message = '';
+
+      if (selectedLanguage === 'en') {
+        message = 'English language selected';
+      } else if (selectedLanguage === 'kn') {
+        message = 'ಕನ್ನಡ ಭಾಷೆ ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ';
+      }
+
+      if (message) {
+        const utterance = new SpeechSynthesisUtterance(message);
+        utterance.lang = selectedLanguage === 'kn' ? 'kn-IN' : 'en-US';
+        speechSynthesis.speak(utterance);
+      }
+    }
+
+    // Save language to localStorage and go to next page
+    function goToNextPage() {
+      const selectedLanguage = document.getElementById('language').value;
+      if (selectedLanguage) {
+        localStorage.setItem('preferredLanguage', selectedLanguage);  // ✅ Save language
+        window.location.href = '/index';  // ✅ Redirect to next Flask route
+      } else {
+        alert('Please select a language first!');
+      }
+    }
+  </script>
+</body>
+</html>

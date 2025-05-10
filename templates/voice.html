@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voice Verification</title>
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f4f6f9;
+    color: #333;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  button {
+    padding: 10px 20px;
+    margin: 10px 5px;
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.2s ease, background-color 0.3s;
+  }
+
+  button:hover {
+    transform: scale(1.05);
+    background-color: #1565c0;
+  }
+
+  #proceedBtn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  #usernameDiv,
+  #recordSection {
+    margin-top: 20px;
+  }
+
+  #recordCircle {
+    width: 60px;
+    height: 60px;
+    background: red;
+    border-radius: 50%;
+    animation: pulseMic 1.2s infinite;
+    display: none;
+    margin: 20px auto;
+    position: relative;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+  }
+
+  #recordCircle::before {
+    content: "";
+    position: absolute;
+    top: 16px;
+    left: 22px;
+    width: 16px;
+    height: 28px;
+    background-color: white;
+    border-radius: 8px;
+  }
+
+  @keyframes pulseMic {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.6);
+    }
+    50% {
+      transform: scale(1.1);
+      box-shadow: 0 0 0 12px rgba(255, 0, 0, 0);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+    }
+  }
+
+  #status {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+</style>
+
+</head>
+<body>
+  <h2 id="title">Are you verbally challenged?</h2>
+  <button onclick="handleResponse(true)">Yes</button>
+  <button onclick="handleResponse(false)">No</button>
+
+  <div id="usernameDiv" style="display: none; margin-top: 20px;">
+    <label>Enter Username:</label>
+    <input type="text" id="username">
+    <button onclick="startProcess()">Continue</button>
+  </div>
+
+  <div id="recordSection" style="display: none; margin-top: 20px;">
+    <p id="sentence"></p>
+    <button onclick="startRecording()">Start Recording</button>
+    <div id="recordCircle"></div>
+    <p id="status"></p>
+  </div>
+
+  
+
+  <script>
+    let mediaRecorder, audioChunks = [], randomSentence = "", username = "";
+
+    function speakMessage(text, lang) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = lang === 'kn' ? 'kn-IN' : 'en-US';
+      speechSynthesis.speak(utterance);
+    }
+
+    window.onload = function () {
+      const lang = localStorage.getItem('preferredLanguage') || 'en';
+      const message = lang === 'kn'
+        ? 'ನೀವು ಮಾತಾಡಲು ಅಸಾಧ್ಯವಾಗಿದ್ದರೆ, ದಯವಿಟ್ಟು ಹೌದು ಆಯ್ಕೆಮಾಡಿ'
+        : 'Are you verbally challenged?';
+      speakMessage(message, lang);
+    };
+
+    function handleResponse(isChallenged) {
+      const lang = localStorage.getItem('preferredLanguage') || 'en';
+      if (isChallenged) {
+        const message = lang === 'kn'
+          ? 'ನೀವು ಶಬ್ದಪರಿಶೀಲನೆಗಾಗಿ ಚಲನೆಯಾಗಿದ್ದೀರಿ'
+          : 'You will be redirected to the score result.';
+        speakMessage(message, lang);
+
+        // Redirect to Flask route
+        window.location.href =  "/final_score";
+
+      } else {
+        document.getElementById("usernameDiv").style.display = "block";
+        const message = lang === 'kn'
+          ? 'ದಯವಿಟ್ಟು ನಿಮ್ಮ ಬಳಕೆದಾರನಾಮವನ್ನು ನಮೂದಿಸಿ'
+          : 'Please enter your username';
+        speakMessage(message, lang);
+      }
+    }
+
+    function startProcess() {
+      username = document.getElementById("username").value.trim();
+      if (!username) return alert("Enter a username");
+
+      const lang = localStorage.getItem('preferredLanguage') || 'en';
+      fetch(`/get_sentence?lang=${lang}`)
+        .then(res => res.json())
+        .then(data => {
+          randomSentence = data.sentence;
+          document.getElementById("sentence").textContent =
+            lang === 'kn' ? 'Please say: "' + randomSentence + '"'
+                          : 'Please say: "' + randomSentence + '"';
+          document.getElementById("recordSection").style.display = "block";
+
+          const message = lang === 'kn'
+            ? 'ನಿಮ್ಮ ವಾಕ್ಯವನ್ನು ಹೇಳಿ'
+            : 'Please say your sentence';
+          speakMessage(message, lang);
+        });
+    }
+
+    async function startRecording() {
+      audioChunks = [];
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+
+      mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+      mediaRecorder.start();
+
+      document.getElementById("recordCircle").style.display = "inline-block";
+      document.getElementById("status").textContent = "Recording...";
+
+      setTimeout(() => mediaRecorder.stop(), 6000);
+
+      mediaRecorder.onstop = async () => {
+        document.getElementById("recordCircle").style.display = "none";
+        const blob = new Blob(audioChunks, { type: 'audio/wav' });
+        const formData = new FormData();
+        formData.append("audio", blob);
+        formData.append("username", username);
+        formData.append("sentence", randomSentence);
+
+        document.getElementById("status").textContent = "Verifying...";
+
+        const res = await fetch("/voice_verify", {
+          method: "POST",
+          body: formData
+        });
+        const result = await res.json();
+
+        document.getElementById("status").textContent = result.message;
+
+        const lang = localStorage.getItem('preferredLanguage') || 'en';
+        speakMessage(result.message, lang);
+
+        console.log(result); // See what's being returned
+
+        if (result.success) {
+  document.getElementById("proceedBtn").disabled = false;
+  document.getElementById("proceedBtn").click();  // optional auto-redirect
+}
+
+      
+        }
+      };
+    
+  </script>
+  <form action="{{ url_for('final_score') }}" method="get">
+    <button id="proceedBtn" type="submit" >Proceed</button>
+  </form>
+</body>
+</html>
