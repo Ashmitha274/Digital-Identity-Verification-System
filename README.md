@@ -119,7 +119,3 @@ The application will be accessible at `http://127.0.0.1:5000/` in your browser.
 If you would like to contribute, feel free to fork the repository and submit a pull request with improvements or fixes.
 
 ---
-
-## Contact
-
-For any queries or suggestions, please contact the developer at: your.email@example.com
